@@ -19,13 +19,13 @@ const EditableSpan = (props: EditableSpanPropsType) => {
     const onChangeSetLocalTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
+
     return (
         isEditMode
-            ? <TextField
-                value={title}
-                autoFocus
-                onBlur={offEditMode}
-                onChange={onChangeSetLocalTitle}
+            ? <TextField value={title}
+                         autoFocus
+                         onBlur={offEditMode}
+                         onChange={onChangeSetLocalTitle}
             />
             : <span onDoubleClick={onEditMode}>{props.title}</span>
     );
