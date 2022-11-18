@@ -1,5 +1,5 @@
 import React, {useState, KeyboardEvent, ChangeEvent} from 'react';
-import {FilterValuesType} from "./App";
+import {FilterValuesType} from "./AppWithRedux";
 import AddIemForm from "./AddIemForm";
 import EditableSpan from "./EditableSpan";
 import {
@@ -19,7 +19,7 @@ type TodoListPropsType = {
     removeTask: (taskId: string, todoListId: string) => void
     changeTodoListFilter: (filter: FilterValuesType, todoListId: string) => void
     addTask: (title: string, todoListId: string) => void
-    changeTaskStatus: (taskId: string, isDone: boolean, todoListId: string) => void
+    changeTaskStatus: (taskId: string, todoListId: string, isDone: boolean) => void
     removeTodoList: (todoListId: string) => void
     changeTaskTitle: (taskId: string, title: string, todoListId: string) => void
     changeTodoListTitle: (title: string, todoListId: string) => void
@@ -37,7 +37,7 @@ const TodoList = (props: TodoListPropsType) => {
     const getTasksListItem = (t: TaskType) => {
         const removeTask = () => props.removeTask(t.id, props.todoListId)
         const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) =>
-            props.changeTaskStatus(t.id, e.currentTarget.checked, props.todoListId)
+            props.changeTaskStatus(t.id, props.todoListId, e.currentTarget.checked)
         const changeTaskTitle = (title: string) =>
             props.changeTaskTitle(t.id, title, props.todoListId)
         return (

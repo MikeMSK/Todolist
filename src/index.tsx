@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { createTheme } from '@material-ui/core/styles';
+import {ThemeProvider} from '@material-ui/core/styles';
+import {createTheme} from '@material-ui/core/styles';
 import * as serviceWorker from './serviceWorker';
 import {teal, yellow} from "@material-ui/core/colors";
 import {CssBaseline} from "@material-ui/core";
+import AppWithRedux from "./AppWithRedux";
+import {Provider} from "react-redux";
+import {store} from "./store";
 
 const theme = createTheme({
     palette: {
@@ -17,11 +19,12 @@ const theme = createTheme({
 })
 
 
-
 ReactDOM.render(
     <ThemeProvider theme={theme}>
         <CssBaseline/>
-        <App />
+        <Provider store={store}>
+            <AppWithRedux/>
+        </Provider>
     </ThemeProvider>
     , document.getElementById('root'));
 
