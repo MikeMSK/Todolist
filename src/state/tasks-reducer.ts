@@ -2,32 +2,30 @@ import {TasksStateType} from "../AppWithRedux";
 import {v1} from "uuid";
 import {TaskType} from "../TodoList";
 import {
-    ADD_TODOLIST,
-    AddTodolist_TypeAC,
-    REMOVE_TODOLIST,
-    RemoveTodolist_TypeAC,
-    todoListId_1, todoListId_2
+    ADD_TODOLIST, REMOVE_TODOLIST,
+    AddTodolist_TypeAC, RemoveTodolist_TypeAC,
 } from "./todolists-reducer";
 
-const initialState: TasksStateType = {
-    [todoListId_1]: [
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS/TS", isDone: true},
-        {id: v1(), title: "React", isDone: false},
-        {id: v1(), title: "Redux", isDone: false},
-        {id: v1(), title: "RTK", isDone: false},
-    ],
-    [todoListId_2]: [
-        {id: v1(), title: "Water", isDone: true},
-        {id: v1(), title: "Beer", isDone: true},
-        {id: v1(), title: "Toilet paper", isDone: false},
-        {id: v1(), title: "Buckwheat", isDone: false},
-        {id: v1(), title: "Meet", isDone: false},
-    ]
-}
+// {
+//     [todoListId_1]: [
+//     {id: v1(), title: "HTML&CSS", isDone: true},
+//     {id: v1(), title: "JS/TS", isDone: true},
+//     {id: v1(), title: "React", isDone: false},
+//     {id: v1(), title: "Redux", isDone: false},
+//     {id: v1(), title: "RTK", isDone: false},
+// ],
+//     [todoListId_2]: [
+//     {id: v1(), title: "Water", isDone: true},
+//     {id: v1(), title: "Beer", isDone: true},
+//     {id: v1(), title: "Toilet paper", isDone: false},
+//     {id: v1(), title: "Buckwheat", isDone: false},
+//     {id: v1(), title: "Meet", isDone: false},
+// ]
+// }
+const initialStateTasks: TasksStateType = {}
 
-export const tasksReducer = (state: TasksStateType = initialState,
-                             action: ActionsTypes): TasksStateType => {
+export const tasksReducer = (state: TasksStateType = initialStateTasks,
+                             action: ActionsTypesTasks): TasksStateType => {
     switch (action.type) {
         case ADD_TASK:
             const newTask: TaskType = {
@@ -70,7 +68,7 @@ export const tasksReducer = (state: TasksStateType = initialState,
     }
 }
 
-export type ActionsTypes = AddTask_TypeAC
+export type ActionsTypesTasks = AddTask_TypeAC
     | RemoveTask_TypeAC
     | ChangeTaskTitle_TypeAC
     | ChangeTaskStatus_TypeAC
