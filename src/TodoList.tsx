@@ -1,4 +1,4 @@
-import React, {ChangeEvent, memo, useCallback} from 'react';
+import React, {ChangeEvent, memo, useCallback, useMemo} from 'react';
 import {FilterValuesType} from './AppWithRedux';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
@@ -46,7 +46,6 @@ export const Todolist = memo((props: PropsType) => {
         },
         []);
 
-
     const onAllClickHandler = useCallback(
         () => {
             props.changeFilter("all", props.id)
@@ -63,13 +62,20 @@ export const Todolist = memo((props: PropsType) => {
         },
         []);
 
-    let tasks = props.tasks
-    if (props.filter === "active") {
-        tasks = tasks.filter(t => t.isDone === false);
+
+    const getFilteredTasks = (tasks: TaskType[], filter: FilterValuesType): TaskType[] => {
+        if (props.filter === "active") {
+            return tasks.filter(t => t.isDone === false);
+        }
+        if (props.filter === "completed") {
+            return tasks.filter(t => t.isDone === true);
+        }
+        return tasks
     }
-    if (props.filter === "completed") {
-        tasks = tasks.filter(t => t.isDone === true);
-    }
+    const newTasks = useMemo(
+        () => getFilteredTasks(props.tasks, props.filter),
+        [props.tasks, props.filter]);
+
 
     // const removeTask = useCallback(
     //     (taskId: string) => {
@@ -100,8 +106,9 @@ export const Todolist = memo((props: PropsType) => {
             </h3>
             <AddItemForm addItem={addTask}/>
             <div>
-                {tasks.map(t => {
-                    return (<>
+                {newTasks.map(t => {
+                    return (
+                        <>
                             {/*<Task key={t.id}*/}
                             {/*      task={t}*/}
                             {/*      removeTask={removeTask}*/}
