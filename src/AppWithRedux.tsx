@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 import {Menu} from "@material-ui/icons";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {todolistsSelector} from "./state/selectors/todolistsSelector";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
@@ -28,8 +29,7 @@ export type TasksStateType = {
 
 export function AppWithRedux() {
 
-    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(
-        state => state.todolists)
+    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(todolistsSelector)
     const tasks = useSelector<AppRootStateType, TasksStateType>(
         state => state.tasks)
 
