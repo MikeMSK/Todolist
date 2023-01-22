@@ -2,7 +2,7 @@ import React, {ChangeEvent, memo} from 'react';
 import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
-import {TaskType} from "./Todolist";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
 
 export type TaskPropsType = {
     task: TaskType
@@ -28,8 +28,8 @@ export const Task = memo((
 
     return (
         <div key={task.id}
-             className={task.isDone ? "is-done" : ""}>
-            <Checkbox checked={task.isDone}
+             className={task.status ? "is-done" : ""}>
+            <Checkbox checked={task.status === TaskStatuses.Completed ? true : false}
                       color="primary"
                       onChange={onChangeHandler}/>
             <EditableSpan value={task.title}

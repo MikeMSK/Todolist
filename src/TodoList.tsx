@@ -1,18 +1,11 @@
-import React, {ChangeEvent, memo, useCallback, useMemo} from 'react';
-import {FilterValuesType} from './AppWithRedux';
+import React, {memo, useCallback, useMemo} from 'react';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
-import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {Task} from "./Task";
 import {TaskWithRedux} from "./TaskWithRedux";
-
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
+import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {FilterValuesType} from "./state/todolists-reducer";
 
 type PropsType = {
     id: string
@@ -20,7 +13,7 @@ type PropsType = {
     filter: FilterValuesType
     tasks: Array<TaskType>
     // removeTask: (taskId: string, todolistId: string) => void
-    // changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
+    // changeTaskStatus: (id: string, status:TaskStatuses, todolistId: string) => void
     // changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
@@ -44,38 +37,37 @@ export const Todolist = memo((props: PropsType) => {
         (title: string) => {
             props.changeTodolistTitle(props.id, title);
         },
-        []);
+        [props.id, props.changeTodolistTitle]);
 
     const onAllClickHandler = useCallback(
         () => {
             props.changeFilter("all", props.id)
         },
-        []);
+        [props.id, props.changeFilter]);
     const onActiveClickHandler = useCallback(
         () => {
             props.changeFilter("active", props.id);
         },
-        []);
+        [props.id, props.changeFilter]);
     const onCompletedClickHandler = useCallback(
         () => {
             props.changeFilter("completed", props.id);
         },
-        []);
+        [props.id, props.changeFilter]);
 
 
     const getFilteredTasks = (tasks: TaskType[], filter: FilterValuesType): TaskType[] => {
         if (props.filter === "active") {
-            return tasks.filter(t => t.isDone === false);
+            return tasks.filter(t => t.status === TaskStatuses.New);
         }
         if (props.filter === "completed") {
-            return tasks.filter(t => t.isDone === true);
+            return tasks.filter(t => t.status === TaskStatuses.Completed);
         }
         return tasks
     }
     const newTasks = useMemo(
         () => getFilteredTasks(props.tasks, props.filter),
         [props.tasks, props.filter]);
-
 
     // const removeTask = useCallback(
     //     (taskId: string) => {
@@ -84,7 +76,7 @@ export const Todolist = memo((props: PropsType) => {
     //     [props.removeTask, props.id])
     //
     // const changeTaskStatus = useCallback(
-    //     (taskId: string, status: boolean) => {
+    //     (taskId: string, status:TaskStatuses) => {
     //         props.changeTaskStatus(taskId, status, props.id);
     //     },
     //     [props.changeTaskStatus, props.id])

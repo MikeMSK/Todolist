@@ -1,8 +1,6 @@
 import React, {useReducer, useState} from 'react';
 // import './App.css';
-// import {TaskType, Todolist} from './Todolist';
 // import {v1} from 'uuid';
-// import {AddItemForm} from './AddItemForm';
 //
 // import {
 //     addTodolistAC,
@@ -14,6 +12,9 @@ import React, {useReducer, useState} from 'react';
 // import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './state/tasks-reducer';
 // import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 // import {Menu} from "@mui/icons-material";
+// import {TaskType} from "../api/todolist-api";
+// import {AddItemForm} from "../AddItemForm";
+// import {Todolist} from "../Todolist";
 //
 // export type FilterValuesType = "all" | "active" | "completed";
 // export type TodolistType = {
