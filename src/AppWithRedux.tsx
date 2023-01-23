@@ -18,28 +18,22 @@ import {
 } from "@material-ui/core";
 import {useAppDispatch, useAppSelector} from "./app/hooks";
 
-export type TasksStateType = {
-    [key: string]: Array<TaskType>
-}
-
 export function AppWithRedux() {
-
     const todolists = useAppSelector(todolistsSelector)
     const tasks = useAppSelector(state => state.tasks)
-
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchTodolistsTC());
+        const thunk = fetchTodolistsTC()
+        dispatch(thunk);
     }, []);
-
 
     const addTask = useCallback(
         (title: string, todolistId: string) => {
             const action = addTaskAC(title, todolistId);
             dispatch(action);
         },
-        [dispatch],);
+        [dispatch]);
     const changeFilter = useCallback(
         (value: FilterValuesType, todolistId: string) => {
             const action = changeTodolistFilterAC(todolistId, value);
@@ -106,3 +100,7 @@ export function AppWithRedux() {
         </div>);
 }
 
+
+export type TasksStateType = {
+    [key: string]: Array<TaskType>
+}
