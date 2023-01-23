@@ -24,7 +24,6 @@ test('correct todolist should be removed', () => {
     expect(endState.length).toBe(1);
     expect(endState[0].id).toBe(todolistId2);
 });
-
 test('correct todolist should be added', () => {
     let newTodolistTitle = "New Todolist";
 
@@ -34,7 +33,6 @@ test('correct todolist should be added', () => {
     expect(endState[0].title).toBe(newTodolistTitle);
     expect(endState[0].filter).toBe("all");
 });
-
 test('correct todolist should change its name', () => {
     let newTodolistTitle = "New Todolist";
 
@@ -45,7 +43,6 @@ test('correct todolist should change its name', () => {
     expect(endState[0].title).toBe("What to learn");
     expect(endState[1].title).toBe(newTodolistTitle);
 });
-
 test('correct filter of todolist should be changed', () => {
     let newFilter: FilterValuesType = "completed";
 
@@ -56,7 +53,6 @@ test('correct filter of todolist should be changed', () => {
     expect(endState[0].filter).toBe("all");
     expect(endState[1].filter).toBe(newFilter);
 });
-
 test('todolists should be set the state server', () => {
 
     let todolists = [
@@ -73,3 +69,12 @@ test('todolists should be set the state server', () => {
     expect(endState[1].title).toBe("What to fack2");
     expect(endState.length).toBe(3);
 });
+
+// test('empty arrays should be added when we set', () => {
+//     let action = setTodolistsAC([
+//         {id: '1', title: "What to fack", addedDate: '', order: 0},
+//         {id: '2', title: "What to fack2", addedDate: '', order: 0},
+//         {id: '3', title: "What to fack3", addedDate: '', order: 0},
+//     ])
+//
+// })
