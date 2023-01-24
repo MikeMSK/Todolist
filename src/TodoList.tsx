@@ -10,29 +10,15 @@ import {fetchTaskTC} from "./state/tasks-reducer";
 import {useDispatch} from "react-redux";
 import {useAppDispatch} from "./app/hooks";
 
-type PropsType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-    tasks: Array<TaskType>
-    // removeTask: (taskId: string, todolistId: string) => void
-    // changeTaskStatus: (id: string, status:TaskStatuses, todolistId: string) => void
-    // changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
-    changeFilter: (value: FilterValuesType, todolistId: string) => void
-    addTask: (title: string, todolistId: string) => void
-    removeTodolist: (id: string) => void
-    changeTodolistTitle: (id: string, newTitle: string) => void
-}
-
 export const Todolist = memo((props: PropsType) => {
     console.log('todolist')
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchTaskTC(props.id))
+        const thunk = fetchTaskTC(props.id);
+        dispatch(thunk)
     }, []);
-
 
     const removeTodolist = () => {
         props.removeTodolist(props.id);
@@ -79,24 +65,6 @@ export const Todolist = memo((props: PropsType) => {
         () => getFilteredTasks(props.tasks, props.filter),
         [props.tasks, props.filter]);
 
-    // const removeTask = useCallback(
-    //     (taskId: string) => {
-    //         props.removeTask(taskId, props.id)
-    //     },
-    //     [props.removeTask, props.id])
-    //
-    // const changeTaskStatus = useCallback(
-    //     (taskId: string, status:TaskStatuses) => {
-    //         props.changeTaskStatus(taskId, status, props.id);
-    //     },
-    //     [props.changeTaskStatus, props.id])
-    //
-    // const changeTaskTitle = useCallback(
-    //     (taskId: string, newValue: string) => {
-    //         props.changeTaskTitle(taskId, newValue, props.id);
-    //     },
-    //     [props.changeTaskStatus, props.id])
-
     return (
         <div>
             <h3>
@@ -111,11 +79,6 @@ export const Todolist = memo((props: PropsType) => {
                 {newTasks.map(t => {
                     return (
                         <>
-                            {/*<Task key={t.id}*/}
-                            {/*      task={t}*/}
-                            {/*      removeTask={removeTask}*/}
-                            {/*      changeTaskStatus={changeTaskStatus}*/}
-                            {/*      changeTaskTitle={changeTaskTitle}/>*/}
                             <TaskWithRedux key={t.id}
                                            task={t}
                                            todoID={props.id}/>
@@ -141,7 +104,19 @@ export const Todolist = memo((props: PropsType) => {
     )
 })
 
-
+type PropsType = {
+    id: string
+    title: string
+    filter: FilterValuesType
+    tasks: Array<TaskType>
+    // removeTask: (taskId: string, todolistId: string) => void
+    // changeTaskStatus: (id: string, status:TaskStatuses, todolistId: string) => void
+    // changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+    changeFilter: (value: FilterValuesType, todolistId: string) => void
+    addTask: (title: string, todolistId: string) => void
+    removeTodolist: (id: string) => void
+    changeTodolistTitle: (id: string, newTitle: string) => void
+}
 //---------------------------------------------------------------------------------
 type ButtonWithMemoPropsType = {
     variant: 'text' | 'outlined' | 'contained'
@@ -159,3 +134,5 @@ const ButtonWithMemo = memo((props: ButtonWithMemoPropsType) => {
         </Button>
     )
 })
+
+

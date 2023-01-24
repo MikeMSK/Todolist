@@ -6,6 +6,7 @@ import {
 import {TaskPriorities, TaskStatuses, TaskType, todolistAPI} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppActionType, AppThunk} from "./store";
+import {actions} from "@storybook/addon-actions";
 
 const initialState: TasksStateType = {}
 
@@ -34,14 +35,11 @@ export const tasksReducer = (state: TasksStateType = initialState,
         }
         case 'ADD-TASK': {
             const stateCopy = {...state}
-            const newTask: TaskType = {
-                id: v1(), title: action.title, status: TaskStatuses.New, description: '',
-                completed: true, priority: TaskPriorities.Low, startDate: '', deadline: '',
-                todoListId: action.todolistId, order: 0, addedDate: '',
-            }
-            const tasks = stateCopy[action.todolistId];
+            const newTask: TaskType = action.task
+
+            const tasks = stateCopy[newTask.todoListId];
             const newTasks = [newTask, ...tasks];
-            stateCopy[action.todolistId] = newTasks;
+            stateCopy[newTask.todoListId] = newTasks;
             return stateCopy;
         }
         case 'CHANGE-TASK-STATUS': {
@@ -75,19 +73,24 @@ export const tasksReducer = (state: TasksStateType = initialState,
             return state;
     }
 }
-export const removeTaskAC = (taskId: string, todolistId: string): RemoveTaskActionType => {
+export const removeTaskAC = (
+    taskId: string, todolistId: string): RemoveTaskActionType => {
     return {type: 'REMOVE-TASK', taskId: taskId, todolistId: todolistId}
 }
-export const addTaskAC = (title: string, todolistId: string): AddTaskActionType => {
-    return {type: 'ADD-TASK', title, todolistId}
+export const addTaskAC = (
+    task: TaskType): AddTaskActionType => {
+    return {type: 'ADD-TASK', task}
 }
-export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string): ChangeTaskStatusActionType => {
+export const changeTaskStatusAC = (
+    taskId: string, status: TaskStatuses, todolistId: string): ChangeTaskStatusActionType => {
     return {type: 'CHANGE-TASK-STATUS', status, todolistId, taskId}
 }
-export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string): ChangeTaskTitleActionType => {
+export const changeTaskTitleAC = (
+    taskId: string, title: string, todolistId: string): ChangeTaskTitleActionType => {
     return {type: 'CHANGE-TASK-TITLE', title, todolistId, taskId}
 }
-export const setTasksAC = (todolistId: string, tasks: TaskType[]): SetTasksActionType => {
+export const setTasksAC = (
+    todolistId: string, tasks: TaskType[]): SetTasksActionType => {
     return {type: 'SET-TASKS', todolistId, tasks}
 }
 
@@ -96,7 +99,7 @@ export const setTasksAC = (todolistId: string, tasks: TaskType[]): SetTasksActio
 export const _fetchTaskTC = (todolistId: string): AppThunk => async dispatch => {
     try {
         const response = await todolistAPI.getTask(todolistId)
-        dispatch(setTasksAC(todolistId, response.data.items))
+        dispatch(setTasksAC(todolistId, response.items))
     } catch (e: any) {
         throw new Error(e)
     }
@@ -107,7 +110,7 @@ export const fetchTaskTC = (todolistId: string): AppThunk => {
     return (dispatch: Dispatch<AppActionType>) => {
         todolistAPI.getTask(todolistId)
             .then((res) => {
-                dispatch(setTasksAC(todolistId, res.data.items))
+                dispatch(setTasksAC(todolistId, res.items))
             })
     }
 }
@@ -116,6 +119,15 @@ export const removeTaskTC = (todolistId: string, taskId: string): AppThunk => {
         todolistAPI.deleteTask(todolistId, taskId)
             .then(() => {
                 dispatch(removeTaskAC(taskId, todolistId))
+            })
+    }
+}
+export const addTaskTC = (title: string, todolistId: string): AppThunk => {
+    return (dispatch: Dispatch<AppActionType>) => {
+        todolistAPI.createTask(todolistId, title)
+            .then((res) => {
+                const newTask = res.data.item
+                dispatch(addTaskAC(newTask))
             })
     }
 }
@@ -128,8 +140,7 @@ export type RemoveTaskActionType = {
 }
 export type AddTaskActionType = {
     type: 'ADD-TASK',
-    todolistId: string
-    title: string
+    task: TaskType
 }
 export type ChangeTaskStatusActionType = {
     type: 'CHANGE-TASK-STATUS',

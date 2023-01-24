@@ -11,7 +11,7 @@ import {
     fetchTodolistsTC, FilterValuesType, removeTodolistAC,
     TodolistDomainType,
 } from './state/todolists-reducer';
-import {addTaskAC} from './state/tasks-reducer';
+import {addTaskAC, addTaskTC} from './state/tasks-reducer';
 import {Menu} from "@material-ui/icons";
 import {
     AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography
@@ -30,8 +30,8 @@ export function AppWithRedux() {
 
     const addTask = useCallback(
         (title: string, todolistId: string) => {
-            const action = addTaskAC(title, todolistId);
-            dispatch(action);
+            const thunk = addTaskTC(title, todolistId);
+            dispatch(thunk);
         },
         [dispatch]);
     const changeFilter = useCallback(
@@ -74,6 +74,7 @@ export function AppWithRedux() {
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: "20px"}}>
+
                     <AddItemForm addItem={addTodolist}/>
                 </Grid>
                 <Grid container spacing={3}>

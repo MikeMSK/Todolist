@@ -21,11 +21,6 @@ export const TaskWithRedux = memo(({task, todoID}: TaskWithReduxPropsType) => {
         dispatch(removeTaskTC(todoID, task.id))
     }, []);
 
-    // useEffect(() => {
-    //     const thunk = fetchTaskTC(props.id);
-    //     dispatch(thunk)
-    // }, []);
-
     const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue;
         e.currentTarget.checked
@@ -35,6 +30,7 @@ export const TaskWithRedux = memo(({task, todoID}: TaskWithReduxPropsType) => {
         const action = changeTaskStatusAC(task.id, newIsDoneValue, todoID);
         dispatch(action);
     }
+
     const changeTaskTitle = (newValue: string) => {
         const action = changeTaskTitleAC(task.id, newValue, todoID);
         dispatch(action)

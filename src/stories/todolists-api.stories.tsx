@@ -66,7 +66,7 @@ export const GetTasks = () => {
         const todolistId = '4771823e-1f64-4e82-9272-02c89a9038c4'
 
         todolistAPI.getTask(todolistId)
-            .then((res) => setState(res.data))
+            .then((res) => setState(res))
             .catch((err) => err)
     }, [])
 
@@ -78,7 +78,7 @@ export const CreateTask = () => {
         const todolistId = '5383e69c-a114-4ceb-8cb7-7cdb67800a9e'
 
         todolistAPI.createTask(todolistId, "new task")
-            .then((res) => setState(res.data.data))
+            .then((res) => setState(res.data))
             .catch((error) => error)
     }, [])
 
