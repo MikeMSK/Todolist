@@ -102,9 +102,16 @@ export const UpdateTaskTitle = () => {
     useEffect(() => {
         const todolistId = '5383e69c-a114-4ceb-8cb7-7cdb67800a9e'
         const taskId = '515747ec-2c01-4007-8a97-f7e684d595df'
-        const title = 'xaxaxaxxaxaxaxaxa'
+        const model = {
+            title: 'task.title',
+            description: 'task.description',
+            status: 0,
+            priority: 0,
+            startDate: 'task.startDate',
+            deadline: 'task.deadline',
+        }
 
-        todolistAPI.updateTask(todolistId, taskId, title)
+        todolistAPI.updateTask(todolistId, taskId, model)
             .then((res) => setState(res.data))
             .catch((error) => error)
     }, [])

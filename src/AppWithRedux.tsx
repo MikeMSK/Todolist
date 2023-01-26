@@ -3,15 +3,12 @@ import './App.css';
 import {Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
 import {todolistsSelector} from "./state/selectors/todolistsSelector";
-import {TaskPriorities, TaskStatuses, TaskType} from "./api/todolist-api";
-import {useSelector} from 'react-redux';
-import {AppRootStateType} from './state/store';
+import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {
-    createTodolistAC, changeTodolistFilterAC, updateTodolistTitleAC,
-    fetchTodolistsTC, FilterValuesType, deleteTodolistAC,
-    TodolistDomainType, deleteTodolistTC, createTodolistTC, updateTodolistTitleTC,
+    changeTodolistFilterAC, fetchTodolistsTC, FilterValuesType,
+    deleteTodolistTC, createTodolistTC, updateTodolistTitleTC,
 } from './state/todolists-reducer';
-import {createTaskAC, createTaskTC, updateTaskStatusTC} from './state/tasks-reducer';
+import {createTaskTC, deleteTaskTC, updateTaskTC} from './state/tasks-reducer';
 import {Menu} from "@material-ui/icons";
 import {
     AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography
@@ -34,7 +31,24 @@ export function AppWithRedux() {
             dispatch(thunk);
         },
         [dispatch]);
-
+    const deleteTask = useCallback(
+        (taskId: string, todolistId: string) => {
+            const thunk = deleteTaskTC(todolistId, taskId)
+            dispatch(thunk)
+        },
+        [dispatch]);
+    const updateTaskStatus = useCallback(
+        (taskId: string, status: TaskStatuses, todolistId: string) => {
+            const thunk = updateTaskTC(todolistId, taskId, {status});
+            dispatch(thunk);
+        },
+        [dispatch])
+    const updateTaskTitle = useCallback(
+        (taskId: string, newTitle: string, todolistId: string) => {
+            const thunk = updateTaskTC(todolistId, taskId, {title: newTitle});
+            dispatch(thunk)
+        },
+        [dispatch])
     const updateFilter = useCallback(
         (value: FilterValuesType, todolistId: string) => {
             const thunk = changeTodolistFilterAC(todolistId, value);
@@ -88,6 +102,9 @@ export function AppWithRedux() {
                                               title={tl.title}
                                               tasks={tasks[tl.id]}
 
+                                              deleteTask={deleteTask}
+                                              updateTaskTitle={updateTaskTitle}
+                                              updateTaskStatus={updateTaskStatus}
                                               changeFilter={updateFilter}
                                               addTask={createTask}
                                               filter={tl.filter}

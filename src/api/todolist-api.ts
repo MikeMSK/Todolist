@@ -48,16 +48,26 @@ export const todolistAPI = {
             `todo-lists/${todolistId}/tasks/${taskId}`)
             .then((res) => res.data)
     },
-
-    updateTask(todolistId: string, taskId: string, model: UpdateTaskType) {
+    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<ResponceType>(
-            `todo-lists/${todolistId}/tasks/${taskId}`,
-            {model})
+            `todo-lists/${todolistId}/tasks/${taskId}`, model)
             .then((res) => res.data)
     },
 }
-
-export type UpdateTaskType = {
+export type TaskType = {
+    description: string,
+    title: string,
+    completed: boolean,
+    status: TaskStatuses,
+    priority: TaskPriorities,
+    startDate: string,
+    deadline: string,
+    id: string,
+    todoListId: string,
+    order: number,
+    addedDate: string,
+}
+export type UpdateTaskModelType = {
     title: string
     description: string
     status: TaskStatuses
@@ -98,19 +108,6 @@ export enum TaskPriorities {
     Later
 }
 
-export type TaskType = {
-    description: string,
-    title: string,
-    completed: boolean,
-    status: TaskStatuses,
-    priority: TaskPriorities,
-    startDate: string,
-    deadline: string,
-    id: string,
-    todoListId: string,
-    order: number,
-    addedDate: string,
-}
 export type GetTasksResponse = {
     items: TaskType[],
     totalCount: string,

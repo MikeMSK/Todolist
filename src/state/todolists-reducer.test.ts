@@ -74,12 +74,3 @@ test('todolists should be set the state server', () => {
     expect(endState[1].title).toBe("What to fack2");
     expect(endState.length).toBe(3);
 });
-
-// test('empty arrays should be added when we set', () => {
-//     let action = setTodolistsAC([
-//         {id: '1', title: "What to fack", addedDate: '', order: 0},
-//         {id: '2', title: "What to fack2", addedDate: '', order: 0},
-//         {id: '3', title: "What to fack3", addedDate: '', order: 0},
-//     ])
-//
-// })

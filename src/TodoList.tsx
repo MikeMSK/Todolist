@@ -24,16 +24,16 @@ export const Todolist = memo((props: PropsType) => {
         props.removeTodolist(props.id);
     }
 
-    const addTask = useCallback(
+    const createTask = useCallback(
         (title: string) => {
             props.addTask(title, props.id);
         },
         [props.addTask, props.id]);
-    const changeTodolistTitle = useCallback(
+    const updateTodolistTitle = useCallback(
         (title: string) => {
-            props.changeTodolistTitle(props.id, title);
+            props.updateTodolistTitle(props.id, title);
         },
-        [props.id, props.changeTodolistTitle]);
+        [props.id, props.updateTodolistTitle]);
 
     const onAllClickHandler = useCallback(
         () => {
@@ -69,19 +69,23 @@ export const Todolist = memo((props: PropsType) => {
         <div>
             <h3>
                 <EditableSpan value={props.title}
-                              onChange={changeTodolistTitle}/>
+                              onChange={updateTodolistTitle}/>
                 <IconButton onClick={removeTodolist}>
                     <Delete/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addTask}/>
+            <AddItemForm addItem={createTask}/>
             <div>
                 {newTasks.map(t => {
                     return (
                         <>
                             <TaskWithRedux key={t.id}
                                            task={t}
-                                           todoID={props.id}/>
+                                           todolistId={props.id}
+
+                                           deleteTask={props.deleteTask}
+                                           updateTaskTitle={props.updateTaskTitle}
+                                           updateTaskStatus={props.updateTaskStatus}/>
                         </>
                     )
                 })}
@@ -109,13 +113,13 @@ type PropsType = {
     title: string
     filter: FilterValuesType
     tasks: Array<TaskType>
-    // removeTask: (taskId: string, todolistId: string) => void
-    // changeTaskStatus: (id: string, status:TaskStatuses, todolistId: string) => void
-    // changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+    updateTaskStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
+    updateTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+    deleteTask: (taskId: string, todolistId: string) => void
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
     removeTodolist: (id: string) => void
-    changeTodolistTitle: (id: string, newTitle: string) => void
+    updateTodolistTitle: (id: string, newTitle: string) => void
 }
 //---------------------------------------------------------------------------------
 type ButtonWithMemoPropsType = {

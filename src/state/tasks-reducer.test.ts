@@ -1,11 +1,4 @@
-import {
-    createTaskAC,
-    updateTaskStatusAC,
-    updateTaskTitleAC,
-    deleteTaskAC,
-    setTasksAC,
-    tasksReducer
-} from './tasks-reducer';
+import {createTaskAC, deleteTaskAC, setTasksAC, tasksReducer, updateTaskAC} from './tasks-reducer';
 import {TasksStateType} from '../AppWithRedux';
 import {v1} from 'uuid';
 import {createTodolistAC, deleteTodolistAC, setTodolistsAC} from './todolists-reducer';
@@ -68,7 +61,7 @@ test('correct task should be added to correct array', () => {
 });
 
 test('status of specified task should be changed', () => {
-    const action = updateTaskStatusAC("2", TaskStatuses.New, "todolistId2");
+    const action = updateTaskAC("2", {status: TaskStatuses.New}, "todolistId2");
 
     const endState = tasksReducer(startState, action)
 
@@ -77,7 +70,7 @@ test('status of specified task should be changed', () => {
 });
 
 test('title of specified task should be changed', () => {
-    const action = updateTaskTitleAC("2", "yogurt", "todolistId2");
+    const action = updateTaskAC("2", {title: 'React Book'}, "todolistId2");
 
     const endState = tasksReducer(startState, action)
 
