@@ -3,15 +3,15 @@ import './App.css';
 import {Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
 import {todolistsSelector} from "./state/selectors/todolistsSelector";
-import {TaskType} from "./api/todolist-api";
+import {TaskPriorities, TaskStatuses, TaskType} from "./api/todolist-api";
 import {useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 import {
-    addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC,
-    fetchTodolistsTC, FilterValuesType, removeTodolistAC,
-    TodolistDomainType,
+    createTodolistAC, changeTodolistFilterAC, updateTodolistTitleAC,
+    fetchTodolistsTC, FilterValuesType, deleteTodolistAC,
+    TodolistDomainType, deleteTodolistTC, createTodolistTC, updateTodolistTitleTC,
 } from './state/todolists-reducer';
-import {addTaskAC, addTaskTC} from './state/tasks-reducer';
+import {createTaskAC, createTaskTC, updateTaskStatusTC} from './state/tasks-reducer';
 import {Menu} from "@material-ui/icons";
 import {
     AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography
@@ -28,34 +28,35 @@ export function AppWithRedux() {
         dispatch(thunk);
     }, []);
 
-    const addTask = useCallback(
+    const createTask = useCallback(
         (title: string, todolistId: string) => {
-            const thunk = addTaskTC(title, todolistId);
+            const thunk = createTaskTC(title, todolistId);
             dispatch(thunk);
         },
         [dispatch]);
-    const changeFilter = useCallback(
+
+    const updateFilter = useCallback(
         (value: FilterValuesType, todolistId: string) => {
-            const action = changeTodolistFilterAC(todolistId, value);
-            dispatch(action);
+            const thunk = changeTodolistFilterAC(todolistId, value);
+            dispatch(thunk);
         },
         [dispatch])
-    const removeTodolist = useCallback(
+    const deleteTodolist = useCallback(
         (id: string) => {
-            const action = removeTodolistAC(id);
-            dispatch(action);
+            const thunk = deleteTodolistTC(id);
+            dispatch(thunk);
         },
         [dispatch])
-    const changeTodolistTitle = useCallback(
+    const updateTodolistTitle = useCallback(
         (id: string, title: string) => {
-            const action = changeTodolistTitleAC(id, title);
-            dispatch(action);
+            const thunk = updateTodolistTitleTC(id, title);
+            dispatch(thunk);
         },
         [dispatch])
-    const addTodolist = useCallback(
+    const createTodolist = useCallback(
         (title: string) => {
-            const action = addTodolistAC(title);
-            dispatch(action);
+            const thunk = createTodolistTC(title);
+            dispatch(thunk);
         },
         [dispatch]);
 
@@ -75,11 +76,11 @@ export function AppWithRedux() {
             <Container fixed>
                 <Grid container style={{padding: "20px"}}>
 
-                    <AddItemForm addItem={addTodolist}/>
+                    <AddItemForm addItem={createTodolist}/>
                 </Grid>
                 <Grid container spacing={3}>
 
-                    {todolists.map(tl => {
+                    {todolists.map((tl) => {
                         return (
                             <Grid item key={tl.id}>
                                 <Paper style={{padding: "10px"}}>
@@ -87,11 +88,11 @@ export function AppWithRedux() {
                                               title={tl.title}
                                               tasks={tasks[tl.id]}
 
-                                              changeFilter={changeFilter}
-                                              addTask={addTask}
+                                              changeFilter={updateFilter}
+                                              addTask={createTask}
                                               filter={tl.filter}
-                                              removeTodolist={removeTodolist}
-                                              changeTodolistTitle={changeTodolistTitle}
+                                              removeTodolist={deleteTodolist}
+                                              updateTodolistTitle={updateTodolistTitle}
                                     />
                                 </Paper>
                             </Grid>)

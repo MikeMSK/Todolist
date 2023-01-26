@@ -23,7 +23,7 @@ export const CreateTodolist = () => {
     useEffect(() => {
         let title = "Zzzzzzzzz"
 
-        todolistAPI.createTodolists(title)
+        todolistAPI.createTodolist(title)
             .then((res) => setState(res.data.item))
             .catch((error) => error)
     }, [])
