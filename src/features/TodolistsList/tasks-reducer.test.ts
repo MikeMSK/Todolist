@@ -52,10 +52,10 @@ test('correct task should be added to correct array', () => {
 
     const endState = tasksReducer(startState, action)
 
-    expect(endState["todolistId1"].length).toBe(2);
-    expect(endState["todolistId2"].length).toBe(3);
+    expect(endState["todolistId1"].length).toBe(3);
+    expect(endState["todolistId2"].length).toBe(2);
     expect(endState["todolistId2"][0].id).toBeDefined();
-    expect(endState["todolistId2"][0].title).toBe("juce");
+    expect(endState["todolistId2"][0].title).toBe("Milk");
     expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New);
 });
 
