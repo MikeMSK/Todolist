@@ -1,5 +1,5 @@
-import {TaskActionType, tasksReducer} from './tasks-reducer';
-import {TodolistsActionType, todolistsReducer} from './todolists-reducer';
+import {TaskActionType, tasksReducer} from '../features/TodolistsList/tasks-reducer';
+import {TodolistActionType, todolistsReducer} from '../features/TodolistsList/todolists-reducer';
 import {applyMiddleware, compose, legacy_createStore} from 'redux';
 import {combineReducers} from "redux";
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from "redux-thunk";
@@ -30,7 +30,7 @@ export type AppRootStateType = ReturnType<typeof rootReducer>
 export type RootState = ReturnType<typeof store.getState>
 
 // все типы экшенов ждя всего App
-export type AppActionType = TodolistsActionType | TaskActionType
+export type AppActionType = TodolistActionType | TaskActionType
 
 // типизация санок
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AppActionType>

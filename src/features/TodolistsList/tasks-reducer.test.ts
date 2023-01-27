@@ -1,8 +1,7 @@
-import {createTaskAC, deleteTaskAC, setTasksAC, tasksReducer, updateTaskAC} from './tasks-reducer';
-import {TasksStateType} from '../AppWithRedux';
+import {createTaskAC, deleteTaskAC, setTasksAC, tasksReducer, TasksStateType, updateTaskAC} from './tasks-reducer';
 import {v1} from 'uuid';
 import {createTodolistAC, deleteTodolistAC, setTodolistsAC} from './todolists-reducer';
-import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
+import {TaskPriorities, TaskStatuses} from "../../api/todolist-api";
 
 let startState: TasksStateType = {};
 beforeEach(() => {
@@ -41,7 +40,7 @@ test('correct task should be deleted from correct array', () => {
 
     expect(endState["todolistId1"].length).toBe(2);
     expect(endState["todolistId2"].length).toBe(2);
-    expect(endState["todolistId2"].every(t => t.id != "2")).toBeTruthy();
+    expect(endState["todolistId2"].every((t: any) => t.id !== "2")).toBeTruthy();
 });
 
 test('correct task should be added to correct array', () => {

@@ -1,8 +1,8 @@
 import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Checkbox, IconButton} from "@material-ui/core";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
 import {Delete} from "@material-ui/icons";
-import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
 
 
 type TaskWithReduxPropsType = {
@@ -13,7 +13,7 @@ type TaskWithReduxPropsType = {
     deleteTask: (taskId: string, todolistId: string) => void
 }
 
-export const TaskWithRedux = memo((props: TaskWithReduxPropsType) => {
+export const Task = memo((props: TaskWithReduxPropsType) => {
 
         const onClickHandler = useCallback(() => {
                 props.deleteTask(props.task.id, props.todolistId)

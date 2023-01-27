@@ -1,14 +1,16 @@
 import axios from "axios";
 
-const instance = axios.create({
-    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
-    withCredentials: true,
-    headers: {
-        "API-KEY": "5a806959-8f18-4ed7-837f-0bbad2316e6b"
-    }
-})
+const instance = axios.create(
+    {
+        baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+        withCredentials: true,
+        headers: {
+            "API-KEY": "5a806959-8f18-4ed7-837f-0bbad2316e6b"
+        }
+    })
 
 export const todolistAPI = {
+// Todolists
     getTodolists() {
         return instance.get<TodolistType[]>(
             "todo-lists")
@@ -20,18 +22,18 @@ export const todolistAPI = {
             {title: title})
             .then((res) => res.data)
     },
-    deleteTodolist(id: string) {
-        return instance.delete<ResponceType>(
-            `todo-lists/${id}`)
-            .then((res) => res.data)
-    },
     updateTodolistTitle(id: string, title: string) {
         return instance.put<ResponceType>(
             `todo-lists/${id}`,
             {title: title})
             .then((res) => res.data)
     },
-
+    deleteTodolist(id: string) {
+        return instance.delete<ResponceType>(
+            `todo-lists/${id}`)
+            .then((res) => res.data)
+    },
+// Tasks
     getTask(todolistId: string) {
         return instance.get<GetTasksResponse>(
             `todo-lists/${todolistId}/tasks`)
@@ -43,17 +45,25 @@ export const todolistAPI = {
             {title: title})
             .then((res) => res.data)
     },
-    deleteTask(todolistId: string, taskId: string) {
-        return instance.delete<ResponceType>(
-            `todo-lists/${todolistId}/tasks/${taskId}`)
-            .then((res) => res.data)
-    },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<ResponceType>(
             `todo-lists/${todolistId}/tasks/${taskId}`, model)
             .then((res) => res.data)
     },
+    deleteTask(todolistId: string, taskId: string) {
+        return instance.delete<ResponceType>(
+            `todo-lists/${todolistId}/tasks/${taskId}`)
+            .then((res) => res.data)
+    },
 }
+
+// types
+//example
+// const test = (arg: any = {}) => {
+//     return arg
+// }
+// const result = test(1)
+// const result2 = test()
 export type TaskType = {
     description: string,
     title: string,
@@ -87,12 +97,13 @@ export type ResponceType<T = {}> = {
     messages: string[]
     data: T
 }
-//example
-// const test = (arg: any = {}) => {
-//     return arg
-// }
-// const result = test(1)
-// const result2 = test()
+export type GetTasksResponse = {
+    items: TaskType[],
+    totalCount: string,
+    error: string | null
+}
+
+// enums
 export enum TaskStatuses {
     New,
     InProgress,
@@ -106,10 +117,4 @@ export enum TaskPriorities {
     Hi,
     Urgently,
     Later
-}
-
-export type GetTasksResponse = {
-    items: TaskType[],
-    totalCount: string,
-    error: string | null
 }
