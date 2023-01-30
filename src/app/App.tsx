@@ -1,15 +1,19 @@
 import React from 'react';
-import './App.css';
+import s from './App.module.css';
 import {Menu} from "@material-ui/icons";
-import {AppBar, Button, Container, IconButton, Toolbar, Typography} from "@material-ui/core";
-import {TaskType} from "../api/todolist-api";
+import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from "@material-ui/core";
 import {TodolistsList} from "../features/TodolistsList/TodolistsList";
+import {ErrorSnackBar} from "../components/ErrorSnackBar/ErrorSnackBar";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "./store";
+import {RequestStatusType} from "./app-reducer";
 
 
 export function App() {
-
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     return (
-        <div className="App">
+        <div className={s.app}>
+            <ErrorSnackBar/>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -20,6 +24,9 @@ export function App() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                <div className={s.lineProgress}>
+                    {status === 'loading' && <LinearProgress color={"secondary"}/>}
+                </div>
             </AppBar>
             <Container fixed>
                 <TodolistsList/>

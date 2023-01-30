@@ -2,6 +2,7 @@ import {TodolistActionType} from './todolists-reducer';
 import {TaskPriorities, TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType} from "../../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppActionType, AppRootStateType, AppThunk} from "../../app/store";
+import {AppErrorActionsType, setErrorAC, setStatusAC} from "../../app/app-reducer";
 
 const initialState: TasksStateType = {}
 
@@ -61,18 +62,31 @@ export const deleteTaskAC = (taskId: string, todolistId: string) => ({type: 'DEL
 // }
 export const fetchTaskTC = (todolistId: string): AppThunk => {
     return (dispatch: Dispatch<AppActionType>) => {
+        dispatch(setStatusAC("loading"))
         todolistAPI.getTask(todolistId)
             .then((res) => {
                 dispatch(setTasksAC(todolistId, res.items))
+                dispatch(setStatusAC("succeeded"))
             })
     }
 }
 export const createTaskTC = (title: string, todolistId: string): AppThunk => {
     return (dispatch: Dispatch<AppActionType>) => {
+        dispatch(setStatusAC("loading"))
         todolistAPI.createTask(todolistId, title)
             .then((res) => {
-                const newTask = res.data.item
-                dispatch(createTaskAC(newTask))
+                if (res.resultCode === 0) {
+                    const newTask = res.data.item
+                    dispatch(createTaskAC(newTask))
+                    dispatch(setStatusAC("succeeded"))
+                } else {
+                    if (res.messages.length) {
+                        dispatch(setErrorAC(res.messages[0]))
+                    } else {
+                        dispatch(setErrorAC('some error'))
+                        dispatch(setStatusAC("failed"))
+                    }
+                }
             })
     }
 }
@@ -117,6 +131,7 @@ export type TaskActionType =
     | ReturnType<typeof updateTaskAC>
     | ReturnType<typeof deleteTaskAC>
     | TodolistActionType
+    | AppErrorActionsType
 export type UpdateDomainTaskType = {
     title?: string
     description?: string

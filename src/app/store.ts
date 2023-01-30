@@ -3,6 +3,7 @@ import {TodolistActionType, todolistsReducer} from '../features/TodolistsList/to
 import {applyMiddleware, compose, legacy_createStore} from 'redux';
 import {combineReducers} from "redux";
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {appReducer} from "./app-reducer";
 
 // ---для расширения в браузере Redux
 declare global {
@@ -14,8 +15,9 @@ declare global {
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
 const rootReducer = combineReducers({
+    app: appReducer,
     tasks: tasksReducer,
-    todolists: todolistsReducer
+    todolists: todolistsReducer,
 })
 
 // ---для расширения в браузере Redux
