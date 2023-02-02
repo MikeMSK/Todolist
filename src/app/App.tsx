@@ -7,6 +7,8 @@ import {ErrorSnackBar} from "../components/ErrorSnackBar/ErrorSnackBar";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./app-reducer";
+import {Route, Routes} from "react-router-dom";
+import {Login} from "../features/Login/Login";
 
 
 export function App({demo = false}: AppPropsType) {
@@ -31,7 +33,11 @@ export function App({demo = false}: AppPropsType) {
                 </div>
             </AppBar>
             <Container fixed>
-                <TodolistsList demo={demo}/>
+                <Routes>
+                    <Route path={'/*'} element={<TodolistsList demo={demo}/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
+                </Routes>
+
             </Container>
         </div>
     );
