@@ -10,6 +10,6 @@ export default {
 } as ComponentMeta<typeof App>
 
 
-export const AppBaseExample = () => {
-    return <App/>
+export const AppBaseExample = (props: any) => {
+    return <App demo={true}/>
 }

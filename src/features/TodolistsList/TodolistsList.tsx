@@ -11,9 +11,11 @@ import {Grid, Paper} from "@material-ui/core";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 
-type TodolistsListType = {}
+type TodolistsListPropsType = {
+    demo?: boolean
+}
 
-export const TodolistsList: React.FC<TodolistsListType> = () => {
+export const TodolistsList: React.FC<TodolistsListPropsType> = ({demo = false}) => {
 
 //hook
     const todolists = useAppSelector(todolistsSelector)
@@ -22,6 +24,7 @@ export const TodolistsList: React.FC<TodolistsListType> = () => {
 
 //getStartTodo
     useEffect(() => {
+        if (demo) return
         const thunk = fetchTodolistsTC()
         dispatch(thunk);
     }, []);
@@ -91,18 +94,18 @@ export const TodolistsList: React.FC<TodolistsListType> = () => {
                     return (
                         <Grid item key={tl.id}>
                             <Paper style={{padding: "10px"}}>
-                                <Todolist id={tl.id}
-                                          title={tl.title}
-                                          tasks={tasks[tl.id]}
-
-                                          deleteTask={deleteTask}
+                                <Todolist demo={demo}
+                                    //tasks
+                                          tasks={allTodolistTask}
+                                          createTask={createTask}
                                           updateTaskTitle={updateTaskTitle}
                                           updateTaskStatus={updateTaskStatus}
-                                          changeFilter={updateFilter}
-                                          addTask={createTask}
-                                          filter={tl.filter}
-                                          removeTodolist={deleteTodolist}
+                                          deleteTask={deleteTask}
+                                    //Todolist
+                                          todolist={tl}
+                                          updateFilter={updateFilter}
                                           updateTodolistTitle={updateTodolistTitle}
+                                          deleteTodolist={deleteTodolist}
                                 />
                             </Paper>
                         </Grid>)

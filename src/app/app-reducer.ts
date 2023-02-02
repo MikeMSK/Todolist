@@ -1,8 +1,8 @@
 //app-reducer.tsx
 
 export type AppErrorActionsType =
-    | ReturnType<typeof setErrorAC>
-    | ReturnType<typeof setStatusAC>
+    | ReturnType<typeof setAppErrorAC>
+    | ReturnType<typeof setAppStatusAC>
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type InitialStateType = {
     status: RequestStatusType
@@ -27,11 +27,11 @@ export const appReducer = (
     }
 }
 
-export const setErrorAC = (error: string | null) => ({
+export const setAppErrorAC = (error: string | null) => ({
     type: 'APP/SET-ERROR',
     error: error
 } as const)
-export const setStatusAC = (status: RequestStatusType) => ({
+export const setAppStatusAC = (status: RequestStatusType) => ({
     type: 'APP/SET-STATUS',
     status: status
 } as const)

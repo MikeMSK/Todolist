@@ -9,8 +9,10 @@ import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./app-reducer";
 
 
-export function App() {
+export function App({demo = false}: AppPropsType) {
+
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+
     return (
         <div className={s.app}>
             <ErrorSnackBar/>
@@ -29,10 +31,14 @@ export function App() {
                 </div>
             </AppBar>
             <Container fixed>
-                <TodolistsList/>
+                <TodolistsList demo={demo}/>
             </Container>
         </div>
     );
+}
+
+type AppPropsType = {
+    demo?: boolean
 }
 
 

@@ -2,13 +2,13 @@ import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import {IconButton, TextField} from "@material-ui/core";
 import {AddBox} from "@material-ui/icons";
 
-export const AddItemForm = memo((props: AddItemFormPropsType) => {
+export const AddItemForm = memo(({disabled = false, addItem}: AddItemFormPropsType) => {
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
-    const addItem = () => {
+    const addItemHandler = () => {
         if (title.trim() !== "") {
-            props.addItem(title);
+            addItem(title);
             setTitle("");
         } else {
             setError("Title is required");
@@ -22,20 +22,23 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
             setError(null)
         }
         if (e.charCode === 13) {
-            addItem();
+            addItemHandler();
         }
     }
     return (
         <div>
-            <TextField variant="outlined"
+            <TextField variant={'outlined'}
                        error={!!error}
                        value={title}
                        onChange={onChangeHandler}
                        onKeyPress={onKeyPressHandler}
-                       label="Title"
+                       label={'Title'}
                        helperText={error}
+                       disabled={disabled}
             />
-            <IconButton color="primary" onClick={addItem}>
+            <IconButton color={'primary'}
+                        onClick={addItemHandler}
+                        disabled={disabled}>
                 <AddBox/>
             </IconButton>
         </div>
@@ -45,4 +48,5 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
