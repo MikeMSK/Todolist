@@ -9,14 +9,21 @@ import {
     Grid,
     TextField
 } from "@material-ui/core";
-import {Form, useFormik} from "formik";
+import {useFormik} from "formik";
+import {loginTC} from "./auth-reducer";
+import {useAppDispatch, useAppSelector} from "../../app/hooks/hooks";
+import {Navigate} from "react-router-dom";
 
 
 export const Login = () => {
 
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+
     const formik = useFormik({
         validate: (values) => {
             if (!values.email) {
+                console.log(values)
                 return {
                     email: 'Email required',
                 }
@@ -33,9 +40,14 @@ export const Login = () => {
             rememberMe: false
         },
         onSubmit: values => {
-            alert(JSON.stringify(values));
+            dispatch(loginTC(values))
         },
     });
+
+    if (!isLoggedIn) {
+        return <Navigate to={'/'}/>
+
+    }
 
     return (
         <Grid container justifyContent={'center'}>

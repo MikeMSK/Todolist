@@ -10,10 +10,14 @@ const instance = axios.create(
     })
 
 export const authAPI = {
+    me() {
+        return instance.get<ResponceType<{ id: string, email: string, login: string }>>(
+            'auth/me')
+            .then((res) => res.data)
+    },
     login(data: LoginParamsType) {
         return instance.post<ResponceType<{ userId?: number }>>(
-            'auth/login',
-            {data})
+            'auth/login', data)
             .then((res) => res.data)
     }
 }
@@ -76,7 +80,7 @@ export type LoginParamsType = {
     email: string,
     password: string,
     rememberMe: boolean,
-    captcha?: string,
+    // captcha?: string,
 }
 export type TaskType = {
     description: string,

@@ -4,6 +4,8 @@ import {applyMiddleware, compose, legacy_createStore} from 'redux';
 import {combineReducers} from "redux";
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {appReducer} from "./app-reducer";
+import {authReducer} from "../features/Login/auth-reducer";
+
 
 // ---для расширения в браузере Redux
 declare global {
@@ -18,6 +20,7 @@ const rootReducer = combineReducers({
     app: appReducer,
     tasks: tasksReducer,
     todolists: todolistsReducer,
+    auth: authReducer,
 })
 
 // ---для расширения в браузере Redux

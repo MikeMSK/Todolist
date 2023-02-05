@@ -10,6 +10,8 @@ import {TaskStatuses} from "../../api/todolist-api";
 import {Grid, Paper} from "@material-ui/core";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
+import {Navigate} from "react-router-dom";
+import {Login} from "../Login/Login";
 
 type TodolistsListPropsType = {
     demo?: boolean
@@ -20,13 +22,15 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = ({demo = false}) 
 //hook
     const todolists = useAppSelector(todolistsSelector)
     const tasks = useAppSelector(state => state.tasks)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const dispatch = useAppDispatch();
 
 //getStartTodo
     useEffect(() => {
-        if (demo) return
-        const thunk = fetchTodolistsTC()
-        dispatch(thunk);
+        if (demo || !isLoggedIn) {
+            return
+        }
+        dispatch(fetchTodolistsTC());
     }, []);
 
 //task
@@ -80,6 +84,10 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = ({demo = false}) 
             dispatch(thunk);
         },
         [dispatch])
+
+    if (!isLoggedIn) {
+        return <Navigate to={'/login'}/>
+    }
 
     return (
         <>
